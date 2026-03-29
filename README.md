@@ -1,6 +1,6 @@
 # Personal Website
 
-This is a personal website created by me and a friend using **Ruby on Rails**, **MySQL**, and **Active Record** as the ORM.
+This is a personal website created by me and a friend using **Ruby on Rails**, **SQLite**, and **Active Record** as the ORM.
 
 The application works as a backend layer that dynamically hydrates a static HTML hosted on **GitHub Pages (github.io)**.
 
@@ -12,12 +12,12 @@ By doing this, we are able to:
 
 - Use GitHub’s DNS and static hosting
 - Keep a dynamic backend powered by Rails
-- Manage and persist data using Active Record with MySQL
+- Manage and persist data using Active Record with SQLite
 
 ## Tech Stack
 
 - **Ruby on Rails** — backend framework
-- **MySQL** — lightweight database
+- **SQLite** — lightweight database
 - **Active Record** — ORM for database interaction
 - **GitHub Pages (github.io)** — static frontend hosting
 
