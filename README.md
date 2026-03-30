@@ -1,36 +1,24 @@
-# Personal Website
+# README
 
-This is a personal website created by me and a friend using **Ruby on Rails**, **SQLite**, and **Active Record** as the ORM.
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-The application works as a backend layer that dynamically hydrates a static HTML hosted on **GitHub Pages (github.io)**.
+Things you may want to cover:
 
-## Idea
+* Ruby version
 
-The main goal of this project was to combine the simplicity and free hosting of GitHub Pages with the flexibility of a Rails-powered backend.
+* System dependencies
 
-By doing this, we are able to:
+* Configuration
 
-- Use GitHub’s DNS and static hosting
-- Keep a dynamic backend powered by Rails
-- Manage and persist data using Active Record with SQLite
+* Database creation
 
-## Tech Stack
+* Database initialization
 
-- **Ruby on Rails** — backend framework
-- **SQLite** — lightweight database
-- **Active Record** — ORM for database interaction
-- **GitHub Pages (github.io)** — static frontend hosting
+* How to run the test suite
 
-## How it works
+* Services (job queues, cache servers, search engines, etc.)
 
-The static frontend is served via GitHub Pages, while the Rails application provides dynamic data. The frontend is then hydrated with this data, enabling a hybrid approach between static and dynamic content.
+* Deployment instructions
 
-## Goals
-
-- Keep deployment simple and low-cost
-- Leverage GitHub infrastructure (DNS + hosting)
-- Maintain flexibility for dynamic features
-
----
-
-A simple experiment blending static and dynamic web architectures 🚀
+* ...

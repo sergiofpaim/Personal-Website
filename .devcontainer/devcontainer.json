@@ -1,0 +1,12 @@
+{
+  "name": "Rails API",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "web",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "extensions": ["Shopify.ruby-lsp"]
+    }
+  },
+  "remoteUser": "root"
+}
