@@ -1,15 +1,17 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show update destroy ]
-
   # POST /users
   def create
-    user = UserService.createUser(user_params)
+    user = UserService.create_user(user_params)
 
-    render json: user
+    render json: user, status: :created
+
+  rescue ActiveRecord::RecordInvalid => e
+    render json: {
+      errors: e.record.errors.full_messages
+    }, status: :unprocessable_entity
   end
 
   private
-    # Only allow a list of trusted parameters through.
     def user_params
       params.expect(user: [ :nickname, :password, :picture, :role, :createdAt, :datetime ])
     end

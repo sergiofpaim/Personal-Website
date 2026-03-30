@@ -1,5 +1,5 @@
 class UserService
-  def self.createUser(dto)
+  def self.create_user(dto)
     user = User.new(dto)
 
     if user.valid?
