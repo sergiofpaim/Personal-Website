@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :sessions
+  resources :posts
   resources :users
 
   mount Rswag::Ui::Engine => "/api-docs"
