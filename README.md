@@ -1,6 +1,4 @@
-# Meu Primeiro Rails API
-
-## API Ruby on Rails com PostgreSQL
+# API Ruby on Rails com PostgreSQL
 
 ## Ruby version
 
