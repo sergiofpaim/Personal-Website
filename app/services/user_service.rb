@@ -5,7 +5,7 @@ class UserService
 
     if user.valid?
       user.save
-      user
+      UserDto.from_entity(user)
     else
       user.errors
     end
@@ -13,7 +13,13 @@ class UserService
 
   # Get
   def self.get_user(user_id)
-    User.find_by(id: user_id)
+    user = User.find_by(id: user_id)
+    UserDto.from_entity(user)
+  end
+
+  def self.get_all_users()
+    users = User.all
+    UserDto.from_collection(users)
   end
 
   # Put

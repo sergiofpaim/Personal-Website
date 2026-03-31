@@ -1,4 +1,20 @@
 class UsersController < ApplicationController
+  # GET /users
+  # Mostrar todos os usuários 
+  def index
+    users = UserService.get_all_users()
+
+    render json: users
+  end
+
+  # GET /users/{user_id}
+  # Mostrar um usuario
+  def show
+    user = UserService.get_user(params[:id])
+
+    render json: user
+  end
+
   # POST /users
   # Adiciona um usuário
   def create
