@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :sessions
   resources :users
 
   get  "/posts",               to: "posts#get_all_posts"

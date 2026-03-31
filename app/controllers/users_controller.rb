@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   # POST /users
+  # Adiciona um usuário
   def create
     user = UserService.create_user(user_params)
 
