@@ -4,13 +4,15 @@ class Post < ApplicationRecord
 
   belongs_to :user
 
-  has_many :comments, class_name: "Comment", dependent: :destroy
+  has_many :comments, class_name: "Comment", dependent: :destroy, autosave: true
 
-  def add_comment(comment)
-    comments.build(comment)
+  def add_comment(comment_params)
+    comments.build(comment_params)
   end
 
-  def remove_comment(comment)
-    comments.target.delete(comment)
+  def remove_comment(comment_id)
+    comment = comments.to_a.find { |c| c.id == comment_id.to_i }
+
+    comment.mark_for_destruction
   end
 end

@@ -3,31 +3,26 @@ class PostService
   def self.create_post(post_params)
     post = Post.new(post_params)
 
-    if post.valid?
-      post.save
-      PostDto.from_entity(post)
-    else
-      post.errors
-    end
+    post.save!
+
+    PostDto.from_entity(post)
   end
 
   def self.create_comment(post_id, comment_params)
       post = Post.includes(comments: :user).find_by(id: post_id)
       return { error: "Post not found" } if post.nil?
 
-      comment = post.add_comment(comment_params)
+      post.add_comment(comment_params)
 
-      if comment.valid? && post.save
-        post.reload
-        PostDto.from_entity(post)
-      else
-        { errors: comment.errors.full_messages }
-      end
+      post.save
+
+      PostDto.from_entity(post)
   end
 
   # Get
   def self.get_all_posts
       posts = Post.all
+
       PostDto.from_collection(posts)
   end
 
@@ -42,6 +37,7 @@ class PostService
       return { error: "User not found" } if user.nil?
 
       post = Post.includes(comments: :user).where(user_id: user_id)
+
       PostDto.from_collection(post)
   end
 
@@ -54,13 +50,12 @@ class PostService
     return { erro: "Post not found" } if post.nil?
 
     comment = post.comments.find_by(id: comment_id)
-    return { erro: "Comment not found" } if comment.nil?
+    return { erro: "Comment not found in post" } if comment.nil?
 
-    post.remove_comment(comment)
-    comment.destroy
+    post.remove_comment(comment_id)
 
-    post.save
-    post.reload
+    post.save!
+
     PostDto.from_entity(post)
   end
 end
