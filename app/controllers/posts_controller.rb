@@ -25,7 +25,15 @@ class PostsController < ApplicationController
     }, status: :unprocessable_entity 
   end
 
-  # POST /posts
+  # GET /post/{post_id}
+  # Retorna um post
+  def get_post_by_id
+    post = PostService.get_post_by_id(params[:post_id])
+
+    render json: post
+  end
+
+  # POST /post
   # Cria um post
   def create_post
     post = PostService.create_post(post_params)
@@ -38,7 +46,7 @@ class PostsController < ApplicationController
     }, status: :unprocessable_entity
   end
 
-  # POST /posts/{post_id}/comments
+  # POST /post/{post_id}/comments
   # Cria um comentário em um post
   def create_comment
     comment = PostService.create_comment(params[:post_id], comment_params)
@@ -49,6 +57,14 @@ class PostsController < ApplicationController
     render json: {
       errors: e.record.errors.full_messages
     }, status: :unprocessable_entity
+  end
+
+  # DELETE /post/{post_id}/comment/{comment_id}
+  # Deleta um comentario e o remove do post
+  def delete_comment
+    result = PostService.delete_comment(params[:post_id], params[:comment_id])
+
+    render json: result
   end
 
   # Request Params

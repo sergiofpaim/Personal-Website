@@ -31,6 +31,12 @@ class PostService
       PostDto.from_collection(posts)
   end
 
+  def self.get_post_by_id(post_id)
+    post = Post.find_by(id: post_id)
+
+    PostDto.from_entity(post)
+  end
+
   def self.get_posts(user_id)
       user = UserService.get_user(user_id)
       return { error: "User not found" } if user.nil?
@@ -42,4 +48,19 @@ class PostService
   # Put
 
   # Delete
+  
+  def self.delete_comment(post_id, comment_id)
+    post = Post.find_by(id: post_id)
+    return { erro: "Post not found" } if post.nil?
+
+    comment = post.comments.find_by(id: comment_id)
+    return { erro: "Comment not found" } if comment.nil?
+
+    post.remove_comment(comment)
+    comment.destroy
+
+    post.save
+    post.reload
+    PostDto.from_entity(post)
+  end
 end

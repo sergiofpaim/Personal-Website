@@ -9,4 +9,8 @@ class Post < ApplicationRecord
   def add_comment(comment)
     comments.build(comment)
   end
+
+  def remove_comment(comment)
+    comments.target.delete(comment)
+  end
 end
