@@ -3,5 +3,5 @@ class Comment < ApplicationRecord
 
   belongs_to :user
   belongs_to :post
-  belongs_to :comment, class_name: "Comment", optional: true
+  belongs_to :replied_comment, class_name: "Comment", optional: true
 end
