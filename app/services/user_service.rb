@@ -9,4 +9,8 @@ class UserService
       user.errors
     end
   end
+
+  def self.get_user(user_id)
+    User.find_by(id: user_id)
+  end
 end

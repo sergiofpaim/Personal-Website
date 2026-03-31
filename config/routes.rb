@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   resources :sessions
   resources :users
 
-  get  "/posts",               to: "posts#get_posts"
-  get  "/posts/:post_id",           to: "posts#show_post"
+  get  "/posts",               to: "posts#get_all_posts"
+  get  "/posts/:user_id",           to: "posts#get_posts"
   post "/posts",               to: "posts#create_post"
   post "/posts/:post_id/comments", to: "posts#create_comment"
 

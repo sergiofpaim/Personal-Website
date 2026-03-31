@@ -10,19 +10,22 @@ class PostService
     end
   end
 
-  def self.get_posts(request = nil)
-    if request.nil?
-      posts = Post.includes(comments: :user).all
+  def self.get_all_posts
+      posts = Post.all
       PostDto.from_collection(posts)
-    else
-      post = Post.includes(comments: :user).find(request)
-      PostDto.from_entity(post)
-    end
+  end
+
+  def self.get_posts(user_id)
+      user = UserService.get_user(user_id)
+      return { error: "User not found" } if user.nil?
+
+      post = Post.includes(comments: :user).where(user_id: user_id)
+      PostDto.from_collection(post)
   end
 
   def self.create_comment(post_id, params)
       post = Post.includes(comments: :user).find_by(id: post_id)
-      return { error: "Post não encontrado" } if post.nil?
+      return { error: "Post not found" } if post.nil?
 
       comment = post.add_comment(params)
 

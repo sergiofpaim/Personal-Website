@@ -1,19 +1,18 @@
 class PostsController < ApplicationController
   # GET /posts
-  def get_posts
-    posts = PostService.get_posts()
+  def get_all_posts
+    posts = PostService.get_all_posts()
 
     render json: posts, status: :created
 
   rescue ActiveRecord::RecordInvalid => e
     render json: {
       errors: e.record.errors.full_messages
-    }, status: :unprocessable_entity
-  end
+    }, status: :unprocessable_entity  end
 
-  # GET /posts/{post_id}
-  def show_post
-    posts = PostService.get_posts(params[:id])
+  # GET /posts/{user_id}
+  def get_posts
+    posts = PostService.get_posts(params[:user_id])
 
     render json: posts, status: :created
 
