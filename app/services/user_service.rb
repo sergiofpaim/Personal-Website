@@ -1,6 +1,5 @@
 class UserService
   # Create
-
   def self.create_user(user_params)
     user = User.new(user_params)
 
@@ -13,12 +12,11 @@ class UserService
   end
 
   # Get
-
   def self.get_user(user_id)
     User.find_by(id: user_id)
   end
 
   # Put
-  #
+  
   # Delete
 end

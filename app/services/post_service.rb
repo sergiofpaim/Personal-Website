@@ -26,7 +26,6 @@ class PostService
   end
 
   # Get
-
   def self.get_all_posts
       posts = Post.all
       PostDto.from_collection(posts)

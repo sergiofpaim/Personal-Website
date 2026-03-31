@@ -9,7 +9,8 @@ class PostsController < ApplicationController
   rescue ActiveRecord::RecordInvalid => e
     render json: {
       errors: e.record.errors.full_messages
-    }, status: :unprocessable_entity  end
+    }, status: :unprocessable_entity
+  end
 
   # GET /posts/{user_id}
   # Busca os posts de um usuário específico
@@ -21,7 +22,8 @@ class PostsController < ApplicationController
   rescue ActiveRecord::RecordInvalid => e
     render json: {
       errors: e.record.errors.full_messages
-    }, status: :unprocessable_entity  end
+    }, status: :unprocessable_entity 
+  end
 
   # POST /posts
   # Cria um post
@@ -49,6 +51,7 @@ class PostsController < ApplicationController
     }, status: :unprocessable_entity
   end
 
+  # Request Params
   private
     def post_params
       params.expect(post: [ :tag, :title, :overview, :content, :user_id ])
