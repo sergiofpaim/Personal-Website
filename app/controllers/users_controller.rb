@@ -20,17 +20,12 @@ class UsersController < ApplicationController
   def create
     user = UserService.create_user(user_params)
 
-    render json: user, status: :created
-
-  rescue ActiveRecord::RecordInvalid => e
-    render json: {
-      errors: e.record.errors.full_messages
-    }, status: :unprocessable_entity
+    render json: user
   end
 
   # Request Params
   private
     def user_params
-      params.expect(user: [ :nickname, :password, :picture, :role, :createdAt, :datetime ])
+      params.require(:user).permit(:nickname, :password, :picture, :role, :createdAt, :datetime)
     end
 end

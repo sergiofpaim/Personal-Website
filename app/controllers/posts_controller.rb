@@ -4,12 +4,7 @@ class PostsController < ApplicationController
   def get_all_posts
     posts = PostService.get_all_posts()
 
-    render json: posts, status: :created
-
-  rescue ActiveRecord::RecordInvalid => e
-    render json: {
-      errors: e.record.errors.full_messages
-    }, status: :unprocessable_entity
+    render json: posts
   end
 
   # GET /posts/{user_id}
@@ -17,12 +12,7 @@ class PostsController < ApplicationController
   def get_posts
     posts = PostService.get_posts(params[:user_id])
 
-    render json: posts, status: :created
-
-  rescue ActiveRecord::RecordInvalid => e
-    render json: {
-      errors: e.record.errors.full_messages
-    }, status: :unprocessable_entity 
+    render json: posts
   end
 
   # GET /post/{post_id}
@@ -38,12 +28,7 @@ class PostsController < ApplicationController
   def create_post
     post = PostService.create_post(post_params)
 
-    render json: post, status: :created
-
-  rescue ActiveRecord::RecordInvalid => e
-    render json: {
-      errors: e.record.errors.full_messages
-    }, status: :unprocessable_entity
+    render json: post
   end
 
   # POST /post/{post_id}/comments
@@ -51,12 +36,15 @@ class PostsController < ApplicationController
   def create_comment
     comment = PostService.create_comment(params[:post_id], comment_params)
 
-    render json: comment, status: :created
+    render json: comment
+  end
 
-  rescue ActiveRecord::RecordInvalid => e
-    render json: {
-      errors: e.record.errors.full_messages
-    }, status: :unprocessable_entity
+  # PUT /post/{post_id}
+  # Edita um post
+  def edit_post
+    post = PostService.edit_post(params[:post_id], post_params)
+
+    render json: post
   end
 
   # DELETE /post/{post_id}
@@ -76,10 +64,10 @@ class PostsController < ApplicationController
   # Request Params
   private
     def post_params
-      params.expect(post: [ :tag, :title, :overview, :content, :user_id ])
+      params.require(:post).permit(:tag, :title, :overview, :content, :user_id)
     end
 
     def comment_params
-      params.expect(comment: [ :content, :user_id ])
+      params.require(:comment).permit(:content, :user_id)
     end
 end

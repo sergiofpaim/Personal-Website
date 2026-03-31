@@ -36,10 +36,25 @@ class PostService
       user = UserService.get_user(user_id)
       return { error: "User not found" } if user.nil?
 
-      PostDto.from_collection(post)
+      posts = Post.where(user_id: user_id)
+
+      PostDto.from_collection(posts)
   end
 
   # Put
+  def self.edit_post(post_id, post_params)
+    post = Post.find_by(id: post_id)
+    return { erro: "Post not found" } if post.nil?
+
+    post.update!(
+      tag: post_params[:tag],
+      title: post_params[:title],
+      overview: post_params[:overview],
+      content: post_params[:content]
+    )
+    
+    PostDto.from_entity(post)
+  end
 
   # Delete
   def self.delete_post(post_id)
