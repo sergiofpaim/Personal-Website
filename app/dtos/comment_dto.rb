@@ -5,7 +5,8 @@ class CommentDto
       content: comment.content,
       user: {
         id: comment.user.id,
-        nickname: comment.user.nickname
+        nickname: comment.user.nickname,
+        picture: comment.user.picture
       },
       created_at: comment.created_at,
       updated_at: comment.updated_at

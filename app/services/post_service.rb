@@ -9,14 +9,14 @@ class PostService
   end
 
   def self.create_comment(post_id, comment_params)
-      post = Post.includes(comments: :user).find_by(id: post_id)
-      return { error: "Post not found" } if post.nil?
+    post = Post.find_by(id: post_id)
+    return { error: "Post not found" } if post.nil?
 
-      post.add_comment(comment_params)
+    post.add_comment(comment_params)
 
-      post.save
+    post.save!
 
-      PostDto.from_entity(post)
+    PostDto.from_entity(post)
   end
 
   # Get
@@ -36,14 +36,17 @@ class PostService
       user = UserService.get_user(user_id)
       return { error: "User not found" } if user.nil?
 
-      post = Post.includes(comments: :user).where(user_id: user_id)
-
       PostDto.from_collection(post)
   end
 
   # Put
 
   # Delete
+  def self.delete_post(post_id)
+    post = Post.find_by(id: post_id)
+
+    post.destroy!
+  end
   
   def self.delete_comment(post_id, comment_id)
     post = Post.find_by(id: post_id)

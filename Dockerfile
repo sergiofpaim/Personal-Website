@@ -11,6 +11,7 @@ RUN apt-get update -qq && apt-get install -y \
   git \
   curl && \
   rm -rf /var/lib/apt/lists/*
+  RUN echo "alias rs='rails s -b 0.0.0.0 -p 3000'" >> ~/.bashrc
 
 WORKDIR /app
 

@@ -59,6 +59,12 @@ class PostsController < ApplicationController
     }, status: :unprocessable_entity
   end
 
+  # DELETE /post/{post_id}
+  # Deleta um post
+  def delete_post
+    PostService.delete_post(params[:post_id])
+  end
+
   # DELETE /post/{post_id}/comment/{comment_id}
   # Deleta um comentario e o remove do post
   def delete_comment
