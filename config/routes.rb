@@ -1,16 +1,14 @@
 Rails.application.routes.draw do
   resources :sessions
-  resources :posts
   resources :users
+
+  get  "/posts",               to: "posts#get_posts"
+  get  "/posts/:post_id",           to: "posts#show_post"
+  post "/posts",               to: "posts#create_post"
+  post "/posts/:post_id/comments", to: "posts#create_comment"
 
   mount Rswag::Ui::Engine => "/api-docs"
   mount Rswag::Api::Engine => "/api-docs"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

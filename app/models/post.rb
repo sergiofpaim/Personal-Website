@@ -5,4 +5,8 @@ class Post < ApplicationRecord
   belongs_to :user
 
   has_many :comments, class_name: "Comment", dependent: :destroy
+
+  def add_comment(comment)
+    comments.build(comment)
+  end
 end
