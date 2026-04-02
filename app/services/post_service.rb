@@ -46,13 +46,10 @@ class PostService
     post = Post.find_by(id: post_id)
     return { erro: "Post not found" } if post.nil?
 
-    post.update!(
-      tag: post_params[:tag],
-      title: post_params[:title],
-      overview: post_params[:overview],
-      content: post_params[:content]
-    )
-    
+    post.update_self(post_params)
+
+    post.save!
+
     PostDto.from_entity(post)
   end
 
@@ -60,9 +57,13 @@ class PostService
   def self.delete_post(post_id)
     post = Post.find_by(id: post_id)
 
+    dto = PostDto.from_entity(post)
+
     post.destroy!
+
+    dto
   end
-  
+
   def self.delete_comment(post_id, comment_id)
     post = Post.find_by(id: post_id)
     return { erro: "Post not found" } if post.nil?

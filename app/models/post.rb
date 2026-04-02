@@ -1,10 +1,7 @@
 class Post < ApplicationRecord
-  validates :overview, presence: true
-  validates :content, presence: true
-
-  belongs_to :user
-
-  has_many :comments, class_name: "Comment", dependent: :destroy, autosave: true
+  def update_self(params)
+    self.assign_attributes(params.compact)
+  end
 
   def add_comment(comment_params)
     comments.build(comment_params)
@@ -15,4 +12,11 @@ class Post < ApplicationRecord
 
     comment.mark_for_destruction
   end
+
+  validates :overview, presence: true
+  validates :content, presence: true
+
+  belongs_to :user
+
+  has_many :comments, class_name: "Comment", dependent: :destroy, autosave: true
 end
