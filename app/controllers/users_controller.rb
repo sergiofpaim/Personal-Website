@@ -6,28 +6,28 @@ class UsersController < ApplicationController
     render json: users
   end
 
-  # Shows an user
+  # Shows a user
   def show
     user = UserService.get_user(params[:id])
 
     render json: user
   end
 
-  # Adds an user
+  # Adds a user
   def create
     user = UserService.create_user(create_user_params)
 
     render json: user
   end
 
-  # Updates an user
+  # Updates a user
   def update
     user = UserService.update_user(params[:id], update_user_params)
 
     render json: user
   end
 
-  # Deletes an user
+  # Deletes a user
   def destroy
     result = UserService.delete_user(params[:id])
 

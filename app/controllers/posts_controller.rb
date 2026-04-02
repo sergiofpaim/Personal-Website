@@ -6,7 +6,7 @@ class PostsController < ApplicationController
     render json: posts
   end
 
-  # Gets all user's posts
+  # Gets all posts for a specific user
   def get_posts
     posts = PostService.get_posts(params[:user_id])
 
