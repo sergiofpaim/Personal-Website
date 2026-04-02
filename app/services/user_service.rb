@@ -1,6 +1,6 @@
 class UserService
   # Create
-  def self.create_user(create_user_params)
+  def create_user(create_user_params)
     user = User.new(create_user_params)
 
     user.save!
@@ -9,21 +9,22 @@ class UserService
   end
 
   # Get
-  def self.get_user(user_id)
+  def get_user(user_id)
     user = User.find_by(id: user_id)
 
     UserDto.from_entity(user)
   end
 
-  def self.get_all_users
+  def get_all_users
     users = User.all
 
     UserDto.from_collection(users)
   end
 
   # Put
-  def self.update_user(user_id, update_user_params)
+  def update_user(user_id, update_user_params)
     user = User.find_by(id: user_id)
+    return { erro: "User not found" } if user.nil?
 
     user.update_self(update_user_params)
 
@@ -33,8 +34,9 @@ class UserService
   end
 
   # Delete
-  def self.delete_user(user_id)
+  def delete_user(user_id)
     user = User.find_by(id: user_id)
+    return { erro: "User not found" } if user.nil?
 
     dto = UserDto.from_entity(user)
 

@@ -4,15 +4,14 @@ class Post < ApplicationRecord
   end
 
   def add_comment(comment_params)
-    comments.build(comment_params)
+    self.comments.build(comment_params)
   end
 
   def remove_comment(comment_id)
-    comment = comments.to_a.find { |c| c.id == comment_id.to_i }
-
-    comment.mark_for_destruction
+    self.comments.to_a.find { |c| c.id == comment_id.to_i }.mark_for_destruction
   end
 
+  validates :title, presence: true
   validates :overview, presence: true
   validates :content, presence: true
 
