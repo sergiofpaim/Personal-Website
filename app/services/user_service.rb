@@ -1,4 +1,6 @@
 class UserService
+  # TODO: Verificar se o usuário que solicita é o da requisição
+
   # Create
   def create_user(create_user_params)
     user = User.new(create_user_params)

@@ -1,4 +1,6 @@
 class PostService
+  # TODO: Verificar se o post e comentário pertencem ao usuário que solicita e um para admin que não verifica
+
   # Create
   def create_post(post_params)
     post = Post.new(post_params)
