@@ -1,20 +1,18 @@
 class PostService
-  # TODO: Verificar se o post e comentário pertencem ao usuário que solicita e um para admin que não verifica
-
   # Create
-  def create_post(post_params)
-    post = Post.new(post_params)
+  def create_post(params)
+    post = Post.new(params)
 
     post.save!
 
     PostDto.from_entity(post)
   end
 
-  def create_comment(post_id, comment_params)
+  def create_comment(post_id, params)
     post = Post.find_by(id: post_id)
     return { error: "Post not found" } if post.nil?
 
-    post.add_comment(comment_params)
+    post.add_comment(params)
 
     post.save!
 
@@ -35,7 +33,7 @@ class PostService
   end
 
   def get_posts(user_id)
-      user = UserService.new.get_user(user_id)
+      user = user_exists(user_id)
       return { error: "User not found" } if user.nil?
 
       posts = Post.where(user_id: user_id)
@@ -44,11 +42,13 @@ class PostService
   end
 
   # Put
-  def edit_post(post_id, post_params)
+  def edit_post(post_id, params)
     post = Post.find_by(id: post_id)
     return { erro: "Post not found" } if post.nil?
 
-    post.update_self(post_params)
+    return { erro: "Post does not belong to user" } if post.user_id != params.user_id
+
+    post.update_self(params)
 
     post.save!
 
@@ -56,9 +56,11 @@ class PostService
   end
 
   # Delete
-  def delete_post(post_id)
+  def delete_my_post(post_id, user)
     post = Post.find_by(id: post_id)
     return { erro: "Post not found" } if post.nil?
+
+    return { erro: "Post does not belong to user" } if post.user_id != user.id
 
     dto = PostDto.from_entity(post)
 
@@ -67,17 +69,25 @@ class PostService
     dto
   end
 
-  def delete_comment(post_id, comment_id)
+  def delete_my_comment(post_id, comment_id, user)
     post = Post.find_by(id: post_id)
     return { erro: "Post not found" } if post.nil?
 
     comment = post.comments.find_by(id: comment_id)
     return { erro: "Comment not found in post" } if comment.nil?
 
+    return { erro: "Comment does not belong to user" } if comment.user_id != user.id
+
     post.remove_comment(comment_id)
 
     post.save!
 
     PostDto.from_entity(post)
+  end
+
+  private
+
+  def user_exists(user_id)
+    UserService.new.get_user(user_id)
   end
 end

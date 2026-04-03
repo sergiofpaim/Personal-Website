@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action do
+    authenticate_request
     @service = UserService.new
   end
 

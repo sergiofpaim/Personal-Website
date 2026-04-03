@@ -2,8 +2,8 @@ class UserService
   # TODO: Verificar se o usuário que solicita é o da requisição
 
   # Create
-  def create_user(create_user_params)
-    user = User.new(create_user_params)
+  def create_user(params)
+    user = User.new(params)
 
     user.save!
 
@@ -24,11 +24,11 @@ class UserService
   end
 
   # Put
-  def update_user(user_id, update_user_params)
+  def update_user(user_id, params)
     user = User.find_by(id: user_id)
     return { erro: "User not found" } if user.nil?
 
-    user.update_self(update_user_params)
+    user.update_self(params)
 
     user.save!
 

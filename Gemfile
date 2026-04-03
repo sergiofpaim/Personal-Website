@@ -50,5 +50,7 @@ group :development, :test do
 
   gem "rswag"
 
-  gem 'byebug'
+  gem "byebug"
+
+  gem "jwt"
 end
