@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::API
-  # TODO: Mudar lógica autenticação para service
   # TODO: Adicionar tratamento de erro persolanizado
   # TODO: Criar painel de admin
 
@@ -7,36 +6,16 @@ class ApplicationController < ActionController::API
 
   private
 
-  def auth_header
-    request.headers["Authorization"]
-  end
-
-  def token
-    return nil unless auth_header.present?
-
-    auth_header.split(" ").last
-  end
-
   def authenticate_request
-    render json: { error: "Token not found" } unless Session.find_by(access_token: token)
+    result = Utils::ValidationService.new(request).authenticate
 
-    decoded_token = Utils::JwtService.decode(token)
-
-    if decoded_token.nil?
-      render json: { error: "Invalid token" }, status: :unauthorized
+    if result[:error]
+      render json: { error: result[:error] }, status: result[:status]
       return
     end
 
-    @current_user = User.find_by(id: decoded_token["sub"])
-    @current_token = token
-
-    if @current_user.nil?
-      render json: { error: "Usuário não encontrado" }, status: :unauthorized
-    end
-
-  rescue JWT::ExpiredSignature
-      Session.where(access_token: token).destroy_all
-      render json: { error: "Token expired" }, status: :unauthorized
+    @current_user = result[:user]
+    @current_token = result[:token]
   end
 
   def current_user
