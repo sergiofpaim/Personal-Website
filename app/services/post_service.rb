@@ -46,7 +46,7 @@ class PostService
     post = Post.find_by(id: post_id)
     return { erro: "Post not found" } if post.nil?
 
-    return { erro: "Post does not belong to user" } if post.user_id != params.user_id
+    return { erro: "Post does not belong to user" } if post.user_id != params[:user_id]
 
     post.update_self(params)
 

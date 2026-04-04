@@ -23,7 +23,7 @@ class AuthService
   end
 
   # Delete
-  def destroy_session(token)
+  def logout(token)
     session = Session.find_by(access_token: token)
 
     return { error: "Sessão não encontrada" } if session.nil?

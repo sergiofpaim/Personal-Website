@@ -6,21 +6,28 @@ class PostsController < ApplicationController
 
   # Gets all posts
   def get_all_posts
-    posts = @service.get_all_posts()
+    posts = @service.get_all_posts
 
     render json: posts
   end
 
-  # Gets all posts for a specific user
+  # Gets all my posts
+  def get_my_posts
+    posts = @service.get_posts(current_user.id)
+
+    render json: posts
+  end
+
+  # Gets a specific user's posts
   def get_posts
-    posts = @service.get_posts(params[:user_id])
+    posts = @service.get_posts(user_id_param)
 
     render json: posts
   end
 
   # Gets a post
   def get_post_by_id
-    post = @service.get_post_by_id(params[:post_id])
+    post = @service.get_post_by_id(post_id_param)
 
     render json: post
   end
@@ -28,8 +35,8 @@ class PostsController < ApplicationController
   # Creates a post
   def create_post
     unless current_user.role.include?("author")
-        render json: { error: "Acesso negado" }, status: :forbidden
-        return
+      render json: { error: "Acesso negado" }, status: :forbidden
+      return
     end
 
     post = @service.create_post(create_post_params.merge(user_id: current_user.id))
@@ -39,58 +46,75 @@ class PostsController < ApplicationController
 
   # Creates a comment in a post
   def create_comment
-    comment = @service.create_comment(params[:post_id], comment_params.merge(user_id: current_user.id))
+    comment = @service.create_comment(post_id_param, comment_params.merge(user_id: current_user.id))
 
     render json: comment
   end
 
-  # Edits um post
+  # Edits my post
   def edit_my_post
     unless current_user.role.include?("author")
-        render json: { error: "Acesso negado" }, status: :forbidden
-        return
+      render json: { error: "Acesso negado" }, status: :forbidden
+      return
     end
 
-    post = @service.edit_post(params[:post_id], edit_post_params.merge(user_id: current_user.id))
+    post = @service.edit_post(post_id_param, edit_post_params.merge(user_id: current_user.id))
 
     render json: post
   end
 
-  # Deletes a post
+  # Deletes my post
   def delete_my_post
     unless current_user.role.include?("author")
-        render json: { error: "Acesso negado" }, status: :forbidden
-        return
+      render json: { error: "Acesso negado" }, status: :forbidden
+      return
     end
 
-    result = @service.delete_my_post(params[:post_id], current_user)
+    result = @service.delete_my_post(post_id_param, current_user)
 
     render json: result
   end
 
-  # Deletes a comment
+  # Deletes my comment
   def delete_my_comment
-    result = @service.delete_my_comment(params[:post_id], params[:comment_id], current_user)
+    result = @service.delete_my_comment(post_id_param, comment_id_param, current_user)
 
     render json: result
   end
 
-  # Request Params
   private
-    def create_post_params
-      post = params.require(:post)
 
-      post.require(:title)
-      post.require(:content)
+  # Body params
+  def create_post_params
+    post = params.require(:post)
 
-      post.permit(:title, :content, :tag, :overview)
-    end
+    post.require(:title)
+    post.require(:content)
 
-    def edit_post_params
-      params.require(:post).permit(:tag, :title, :overview, :content)
-    end
+    post.permit(:title, :content, :tag, :overview)
+  end
 
-    def comment_params
-      params.require(:comment).permit(:content)
-    end
+  def edit_post_params
+    params.require(:post).permit(:tag, :title, :overview, :content)
+  end
+
+  def comment_params
+    comment = params.require(:comment)
+    comment.require(:content)
+
+    comment.permit(:content)
+  end
+
+  # Route/query params
+  def user_id_param
+    params.require(:user_id)
+  end
+
+  def post_id_param
+    params.require(:post_id)
+  end
+
+  def comment_id_param
+    params.require(:comment_id)
+  end
 end

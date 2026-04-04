@@ -1,4 +1,8 @@
 class ApplicationController < ActionController::API
+  # TODO: Mudar lógica autenticação para service
+  # TODO: Adicionar tratamento de erro persolanizado
+  # TODO: Criar painel de admin
+
   before_action :authenticate_request
 
   private

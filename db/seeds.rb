@@ -7,7 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-# 
+#
 #   Limpar dados (opcional, útil em dev)
 Comment.delete_all
 Message.delete_all
@@ -16,14 +16,26 @@ Session.delete_all
 User.delete_all
 
 # ==== USERS ====
+
+## ==== AUTHOR (fixo) ====
+author = User.find_or_create_by!(nickname: "author") do |u|
+  u.password = "123456"
+  u.picture = "https://picsum.photos/200?random=author"
+  u.role = "author"
+end
+
+## ==== Users ====
 users = 5.times.map do |i|
   User.create!(
     nickname: "user#{i + 1}",
     password: "123456",
     picture: "https://picsum.photos/200?random=#{i}",
-    role: ["admin", "user"].sample
+    role: [ "admin", "user" ].sample
   )
 end
+
+# inclui o author na lista geral
+users << author
 
 # ==== POSTS ====
 posts = users.flat_map do |user|
@@ -32,7 +44,7 @@ posts = users.flat_map do |user|
       title: "Post #{i + 1} de #{user.nickname}",
       overview: "Resumo do post #{i + 1}",
       content: "Conteúdo detalhado do post #{i + 1} do #{user.nickname}",
-      tag: ["tech", "life", "random"].sample,
+      tag: [ "tech", "life", "random" ].sample,
       user_id: user.id
     )
   end

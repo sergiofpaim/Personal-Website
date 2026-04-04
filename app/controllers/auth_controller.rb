@@ -20,10 +20,9 @@ class AuthController < ApplicationController
   end
 
 
-  # TODO: Corrigir logout
   # Signs a user out
   def logout
-    @service.destroy_session(@current_token)
+    @service.logout(@current_token)
   end
 
   # Request Params
