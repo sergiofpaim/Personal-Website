@@ -5,7 +5,13 @@ class UserDto
       nickname: user.nickname,
       picture: user.picture,
       role: user.role,
-      created_at: user.created_at
+      posts: user.posts.map do |post|
+        {
+          id: post.id,
+          title: post.title,
+          content: post.content
+        }
+      end
     }
   end
 

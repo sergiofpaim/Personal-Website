@@ -1,8 +1,10 @@
 class PostsController < ApplicationController
   before_action do
-    authenticate_request
     @service = PostService.new
   end
+
+  before_action :require_admin, only: [ :delete_post, :delete_comment ]
+  before_action :require_author, only: [ :create_my_post, :edit_my_post, :delete_my_post ]
 
   # Gets all posts
   def get_all_posts
@@ -18,13 +20,6 @@ class PostsController < ApplicationController
     render json: posts
   end
 
-  # Gets a specific user's posts
-  def get_posts
-    posts = @service.get_posts(user_id_param)
-
-    render json: posts
-  end
-
   # Gets a post
   def get_post_by_id
     post = @service.get_post_by_id(post_id_param)
@@ -33,19 +28,14 @@ class PostsController < ApplicationController
   end
 
   # Creates a post
-  def create_post
-    unless current_user.role.include?("author")
-      render json: { error: "Acesso negado" }, status: :forbidden
-      return
-    end
-
+  def create_my_post
     post = @service.create_post(create_post_params.merge(user_id: current_user.id))
 
     render json: post
   end
 
   # Creates a comment in a post
-  def create_comment
+  def create_my_comment
     comment = @service.create_comment(post_id_param, comment_params.merge(user_id: current_user.id))
 
     render json: comment
@@ -53,11 +43,6 @@ class PostsController < ApplicationController
 
   # Edits my post
   def edit_my_post
-    unless current_user.role.include?("author")
-      render json: { error: "Acesso negado" }, status: :forbidden
-      return
-    end
-
     post = @service.edit_post(post_id_param, edit_post_params.merge(user_id: current_user.id))
 
     render json: post
@@ -65,11 +50,6 @@ class PostsController < ApplicationController
 
   # Deletes my post
   def delete_my_post
-    unless current_user.role.include?("author")
-      render json: { error: "Acesso negado" }, status: :forbidden
-      return
-    end
-
     result = @service.delete_my_post(post_id_param, current_user)
 
     render json: result
@@ -78,6 +58,22 @@ class PostsController < ApplicationController
   # Deletes my comment
   def delete_my_comment
     result = @service.delete_my_comment(post_id_param, comment_id_param, current_user)
+
+    render json: result
+  end
+
+  # ADMIN
+
+  # Deletes a post
+  def delete_post
+    result = @service.delete_post(post_id_param)
+
+    render json: result
+  end
+
+  # Deletes a comment
+  def delete_comment
+    result = @service.delete_comment(comment_id_param)
 
     render json: result
   end
@@ -116,5 +112,13 @@ class PostsController < ApplicationController
 
   def comment_id_param
     params.require(:comment_id)
+  end
+
+  def require_admin
+    render json: { error: "Acesso negado" }, status: :forbidden unless current_user.role.include?("admin")
+  end
+
+  def require_author
+    render json: { error: "Acesso negado" }, status: :forbidden unless current_user.role.include?("author")
   end
 end

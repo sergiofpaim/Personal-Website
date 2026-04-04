@@ -88,6 +88,6 @@ class PostService
   private
 
   def user_exists(user_id)
-    UserService.new.get_user(user_id)
+    UserService.new.get_user_profile(user_id)
   end
 end

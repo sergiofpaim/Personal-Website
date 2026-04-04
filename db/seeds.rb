@@ -24,6 +24,12 @@ author = User.find_or_create_by!(nickname: "author") do |u|
   u.role = "author"
 end
 
+admin = User.find_or_create_by!(nickname: "admin") do |u|
+  u.password = "123456"
+  u.picture = "https://picsum.photos/200?random=author"
+  u.role = "admin"
+end
+
 ## ==== Users ====
 users = 5.times.map do |i|
   User.create!(
@@ -36,6 +42,10 @@ end
 
 # inclui o author na lista geral
 users << author
+
+
+# inclui o admin na lista geral
+users << admin
 
 # ==== POSTS ====
 posts = users.flat_map do |user|
