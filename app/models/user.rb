@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  # TODO: Adicionar role ao atualizar, atualmente troca um role pelo outro
   def update_self(params)
     self.assign_attributes(params.compact)
   end

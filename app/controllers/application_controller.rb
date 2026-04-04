@@ -1,7 +1,4 @@
 class ApplicationController < ActionController::API
-  # TODO: Adicionar tratamento de erro persolanizado
-  # TODO: Criar painel de admin
-
   before_action :authenticate_request
 
   private

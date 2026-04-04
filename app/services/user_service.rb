@@ -1,6 +1,4 @@
 class UserService
-  # TODO: Verificar se o usuário que solicita é o da requisição
-
   # Create
   def create_user(params)
     user = User.new(params)
@@ -49,8 +47,8 @@ class UserService
     UserDto.from_entity(user)
   end
 
-  def set_as_admin(user_id)
-    user = User.find_by(id: user_id)
+  def set_as_admin(nickname)
+    user = User.find_by(nickname: nickname)
     return { erro: "User not found" } if user.nil?
 
     user.update_self(role: "admin")

@@ -73,7 +73,7 @@ class PostsController < ApplicationController
 
   # Deletes a comment
   def delete_comment
-    result = @service.delete_comment(comment_id_param)
+    result = @service.delete_comment(post_id_param, comment_id_param)
 
     render json: result
   end

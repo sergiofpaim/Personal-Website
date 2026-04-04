@@ -69,6 +69,17 @@ class PostService
     dto
   end
 
+  def delete_post(post_id)
+    post = Post.find_by(id: post_id)
+    return { erro: "Post not found" } if post.nil?
+
+    dto = PostDto.from_entity(post)
+
+    post.destroy!
+
+    dto
+  end
+
   def delete_my_comment(post_id, comment_id, user)
     post = Post.find_by(id: post_id)
     return { erro: "Post not found" } if post.nil?
@@ -77,6 +88,20 @@ class PostService
     return { erro: "Comment not found in post" } if comment.nil?
 
     return { erro: "Comment does not belong to user" } if comment.user_id != user.id
+
+    post.remove_comment(comment_id)
+
+    post.save!
+
+    PostDto.from_entity(post)
+  end
+
+  def delete_comment(post_id, comment_id)
+    post = Post.find_by(id: post_id)
+    return { erro: "Post not found" } if post.nil?
+
+    comment = post.comments.find_by(id: comment_id)
+    return { erro: "Comment not found in post" } if comment.nil?
 
     post.remove_comment(comment_id)
 
