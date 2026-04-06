@@ -15,7 +15,7 @@ module Utils
 
     def authenticate
       session = Session.find_by(access_token: token)
-      return ::ResponseType.unauthorized("Token not found") unless session
+      return ::ResponseType.unauthorized("Invalid token") unless session
 
       decoded = Utils::JwtService.decode(token)
       return ::ResponseType.unauthorized("Invalid token") if decoded.nil?
