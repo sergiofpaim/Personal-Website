@@ -115,10 +115,10 @@ class PostsController < ApplicationController
   end
 
   def require_admin
-    render json: { error: "Acesso negado" }, status: :forbidden unless current_user.role.include?("admin")
+    render json: { error: "Access denied" }, status: :forbidden unless current_user.role.include?("admin")
   end
 
   def require_author
-    render json: { error: "Acesso negado" }, status: :forbidden unless current_user.role.include?("author")
+    render json: { error: "Access denied" }, status: :forbidden unless current_user.role.include?("author")
   end
 end

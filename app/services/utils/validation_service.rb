@@ -10,24 +10,26 @@ module Utils
 
     def token
       return nil unless auth_header.present?
-
       auth_header.split(" ").last
     end
 
     def authenticate
       session = Session.find_by(access_token: token)
-      return { error: "Token not found", status: :unauthorized } unless session
+      return ::ResponseType.unauthorized("Token not found") unless session
 
       decoded = Utils::JwtService.decode(token)
-      return { error: "Invalid token", status: :unauthorized } if decoded.nil?
+      return ::ResponseType.unauthorized("Invalid token") if decoded.nil?
 
       user = User.find_by(id: decoded["sub"])
-      return { error: "Usuário não encontrado", status: :unauthorized } if user.nil?
+      return ::ResponseType.no_content("User not found") if user.nil?
 
-      { user: user, token: token }
+      ::ResponseType.success({ user: user, token: token })
+
     rescue JWT::ExpiredSignature
       Session.where(access_token: token).destroy_all
-      { error: "Token expired", status: :unauthorized }
+      ::ResponseType.unauthorized("Token expired")
+    rescue StandardError => e
+      ::ResponseType.error("Validation error: #{e.message}")
     end
   end
 end

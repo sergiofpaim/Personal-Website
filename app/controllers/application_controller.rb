@@ -6,13 +6,13 @@ class ApplicationController < ActionController::API
   def authenticate_request
     result = Utils::ValidationService.new(request).authenticate
 
-    if result[:error]
-      render json: { error: result[:error] }, status: result[:status]
+    unless result.success?
+      render json: result
       return
     end
 
-    @current_user = result[:user]
-    @current_token = result[:token]
+    @current_user = result.payload[:user]
+    @current_token = result.payload[:token]
   end
 
   def current_user

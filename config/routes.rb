@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   # User
   get  "/users",                                  to: "users#get_all_user_profiles"
-  get  "/users/:nickname/profile",                to: "users#get_user_profile"
+  get  "/user/:nickname/profile",                 to: "users#get_user_profile"
   get "/me",                                      to: "users#get_me"
   put "/me",                                      to: "users#update_me"
   delete "/me",                                   to: "users#destroy_me"

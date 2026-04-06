@@ -78,6 +78,6 @@ class UsersController < ApplicationController
     end
 
     def require_admin
-      render json: { error: "Acesso negado" }, status: :forbidden unless current_user.role.include?("admin")
+      render json: { error: "Access denied" }, status: :forbidden unless current_user.role.include?("admin")
     end
 end
