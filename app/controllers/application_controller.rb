@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
   before_action :authenticate_request
 
+  # Captures the parameters errors and format them
   rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
   rescue_from ActionController::UnpermittedParameters, with: :handle_unpermitted_parameters
   rescue_from ActionController::BadRequest, with: :handle_bad_request
@@ -15,6 +16,7 @@ class ApplicationController < ActionController::API
 
   private
 
+  # Validates the JWT token
   def authenticate_request
     result = Utils::ValidationService.new(request).authenticate
 

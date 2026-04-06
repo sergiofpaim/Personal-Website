@@ -15,6 +15,7 @@ class FormattedResponse
     !success?
   end
 
+  # Overrides the json render function and formats its structure
   def as_json(*)
     {
       status_code: status_code,
